@@ -29,8 +29,8 @@ admin:
 build:
 	$(compose) up --build -d
 
-logs:
-	$(compose) logs -f --tail=$(lines)
+web-logs:
+	$(compose) logs -f --tail=$(lines) web
 
 stop:
 	$(compose) stop

@@ -2,6 +2,7 @@
 exclude = .git, __pycache__, apps.py, test*, *test.py, *management/commands, *migrations/*, manage.py
 ignore =
     E501,
+    W503,
     ANN101,
     ANN002,
     ANN003,

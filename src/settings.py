@@ -160,7 +160,6 @@ REST_FRAMEWORK = {
 
 REST_KNOX = {
     "TOKEN_TTL": timedelta(days=config.KNOX_TOKEN_TTL_DAYS),
-    "USER_SERIALIZER": "src.users.serializers.KnoxUserResponseSerializer",
 }
 
 # Always use PTPython for shell_plus

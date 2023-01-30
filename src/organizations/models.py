@@ -41,10 +41,10 @@ class StoredFile(models.Model):
 
     @property
     def filename(self) -> str:
-        pass
+        return self.file.name
 
     def __str__(self) -> str:
-        return f"{self.filename} by {self.downloader.username}"
+        return f"{self.filename} by {self.uploader.username}"
 
 
 class StoredFileHistory(models.Model):

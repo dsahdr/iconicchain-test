@@ -24,8 +24,11 @@ class Command(BaseCommand):
         """Create User objects if organization is valid"""
         for user in config.USERS:
             organization = Organization.objects.filter(name=user.organization).first()
-            if organization:
-                OrganizationUser.objects.get_or_create(
+            if (
+                organization
+                and not OrganizationUser.objects.filter(username=user.username).exists()
+            ):
+                OrganizationUser.objects.create_user(
                     username=user.username,
                     password=user.password,
                     organization=organization,
