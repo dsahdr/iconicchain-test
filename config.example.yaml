@@ -1,0 +1,8 @@
+DEBUG: true
+SECRET_KEY: 'Django secret key'
+ALLOWED_HOSTS:
+  - 'localhost'
+SWAGGER_TITLE: "iconicchain test task"
+SWAGGER_DESCRIPTION: 'implementation of test task for iconicchain'
+
+KNOX_TOKEN_TTL_DAYS: 100
