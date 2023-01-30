@@ -33,7 +33,7 @@ class StoredFileHistoryQuerySet(models.QuerySet):
         return self.filter(downloader=user)
 
     def organization(self, organization: "Organization") -> models.QuerySet:
-        return self.filter(file__downloader__organization=organization)
+        return self.filter(file__uploader__organization=organization)
 
 
 class StoredFileHistoryManager(models.Manager):

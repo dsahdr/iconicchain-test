@@ -6,3 +6,30 @@ SWAGGER_TITLE: "iconicchain test task"
 SWAGGER_DESCRIPTION: 'implementation of test task for iconicchain'
 
 KNOX_TOKEN_TTL_DAYS: 100
+
+
+# database fixtures
+ORGANIZATIONS:
+  - name: Microsoft
+  - name: Google
+  - name: Apple
+
+USERS:
+  - username: TimCook
+    password: "12345"
+    organization: Microsoft
+  - username: BillGates
+    password: "12345"
+    organization: Microsoft
+  - username: SteveJobs
+    password: "12345"
+    organization: Apple
+  - username: StephenWozniak
+    password: "12345"
+    organization: Apple
+  - username: SergeyBrin
+    password: "12345"
+    organization: Google
+  - username: LarryPage
+    password: "12345"
+    organization: Google

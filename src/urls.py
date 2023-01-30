@@ -1,7 +1,6 @@
 """
 iconicchain URL Configuration
 """
-from django.contrib import admin
 from django.urls import include, path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
@@ -25,7 +24,6 @@ urlpatterns = [
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    path("admin/", admin.site.urls),
     path("api/v1/users/", include("src.users.urls")),
     path("api/v1/organizations/", include("src.organizations.urls")),
 ]

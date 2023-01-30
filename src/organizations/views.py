@@ -46,11 +46,12 @@ class OrganizationFilesView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
+        operation_description="View all files uploaded by organization members",
         manual_parameters=[
             openapi.Parameter(
                 "organization_name", openapi.IN_QUERY, type=openapi.TYPE_STRING
             ),
-        ]
+        ],
     )
     def get(self: "ListAPIView", request: "HttpRequest", *args, **kwargs) -> "Response":
         return super().get(request, *args, **kwargs)
@@ -72,5 +73,7 @@ class DownloadFilesView(APIView):
         file = StoredFile.objects.filter(file=filename).first()
         if not file:
             raise FileNotFound
+        # create download history
         StoredFileHistory.objects.create(file=file, downloader=request.user)
+        # return "static" serve function's response as a native view from MEDIA_URL
         return serve(request, filename, document_root=MEDIA_ROOT)

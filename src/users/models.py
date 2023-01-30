@@ -4,7 +4,7 @@ from django.db import models
 
 class OrganizationUser(AbstractUser):
     """
-    User model linked to the organisation
+    User model linked to the organization
     """
 
     organization = models.ForeignKey(

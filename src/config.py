@@ -26,13 +26,12 @@ class Config:
     SWAGGER_DESCRIPTION: str
     KNOX_TOKEN_TTL_DAYS: int
 
+    # Fixtures instead of CRUD
     ORGANIZATIONS: list[Organization]
     USERS: list[User]
 
 
 config_path = "/../config.yaml"
-if os.getenv("IS_TEST", False):
-    config_path = "/../config.example.yaml"
 
 with open(os.path.dirname(__file__) + config_path) as f:
     config_data = yaml.safe_load(f)

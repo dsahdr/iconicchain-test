@@ -45,15 +45,16 @@ class UserDownloadsView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
+        operation_description="List of user's downloads",
         manual_parameters=[
             openapi.Parameter("username", openapi.IN_QUERY, type=openapi.TYPE_STRING),
-        ]
+        ],
     )
     def get(self: "ListAPIView", request: "HttpRequest", *args, **kwargs) -> "Response":
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self) -> QuerySet:
-        username = self.request.query_params.get("username", "")
+        username = self.request.query_params.get("username")
         user = OrganizationUser.objects.filter(username__icontains=username).first()
         if not user:
             raise UserNotFound
