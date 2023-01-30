@@ -19,6 +19,10 @@ class Organization(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    @property
+    def total_download_count(self) -> int:
+        return StoredFileHistory.objects.organization(self).count()
+
 
 class StoredFile(models.Model):
     """
@@ -43,11 +47,23 @@ class StoredFile(models.Model):
     def filename(self) -> str:
         return self.file.name
 
+    @property
+    def upload_timestamp(self) -> int:
+        return self.uploaded_at.timestamp()
+
+    @property
+    def download_count(self) -> int:
+        return self.download_history.count()
+
     def __str__(self) -> str:
         return f"{self.filename} by {self.uploader.username}"
 
 
 class StoredFileHistory(models.Model):
+    """
+    A model representing a single download of file by specific user
+    """
+
     file = models.ForeignKey(
         "organizations.StoredFile",
         related_name="download_history",
@@ -61,6 +77,10 @@ class StoredFileHistory(models.Model):
     downloaded_at = models.DateTimeField(auto_now_add=True)
 
     objects = StoredFileHistoryManager()
+
+    @property
+    def download_timestamp(self) -> int:
+        return self.downloaded_at.timestamp()
 
     def __str__(self) -> str:
         return f"Download of {self.file.filename} by {self.downloader.username} at {self.downloaded_at}"

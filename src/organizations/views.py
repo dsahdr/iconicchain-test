@@ -1,12 +1,19 @@
-from django.http import HttpRequest
+from django.db.models import QuerySet
+from django.http import HttpRequest, HttpResponse
+from django.views.static import serve
+from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import parsers, status
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from src.organizations.serializers import FileUploadSerializer
+from src.organizations.exceptions import FileNotFound, OrganizationNotFound
+from src.organizations.models import Organization, StoredFile, StoredFileHistory
+from src.organizations.serializers import FileSerializer, FileUploadSerializer
 from src.responses import error_response
+from src.settings import MEDIA_ROOT
 
 
 class FileUploadView(APIView):
@@ -32,3 +39,38 @@ class FileUploadView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response("Uploaded", status=status.HTTP_201_CREATED)
+
+
+class OrganizationFilesView(ListAPIView):
+    serializer_class = FileSerializer
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                "organization_name", openapi.IN_QUERY, type=openapi.TYPE_STRING
+            ),
+        ]
+    )
+    def get(self: "ListAPIView", request: "HttpRequest", *args, **kwargs) -> "Response":
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self) -> QuerySet:
+        organization_name = self.request.query_params.get("organization_name", "")
+        organization = Organization.objects.filter(
+            name__iexact=organization_name
+        ).first()
+        if not organization:
+            raise OrganizationNotFound
+        return StoredFile.objects.organization(organization)
+
+
+class DownloadFilesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self: "APIView", request: "HttpRequest", filename: str) -> "HttpResponse":
+        file = StoredFile.objects.filter(file=filename).first()
+        if not file:
+            raise FileNotFound
+        StoredFileHistory.objects.create(file=file, downloader=request.user)
+        return serve(request, filename, document_root=MEDIA_ROOT)

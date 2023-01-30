@@ -20,20 +20,20 @@ class StoredFileManager(models.Manager):
         return StoredFileQuerySet(self.model, using=self._db)
 
     def user(self, user: "OrganizationUser") -> models.QuerySet:
-        """filter queryset by user"""
+        """filter queryset by uploading user"""
         return self.get_queryset().user(user)
 
     def organization(self, organization: "Organization") -> models.QuerySet:
-        """filter queryset by organization"""
+        """filter queryset by uploader's organization"""
         return self.get_queryset().organization(organization)
 
 
 class StoredFileHistoryQuerySet(models.QuerySet):
     def user(self, user: "OrganizationUser") -> models.QuerySet:
-        return self.filter(uploader=user)
+        return self.filter(downloader=user)
 
     def organization(self, organization: "Organization") -> models.QuerySet:
-        return self.filter(file__uploader__organization=organization)
+        return self.filter(file__downloader__organization=organization)
 
 
 class StoredFileHistoryManager(models.Manager):
@@ -41,9 +41,9 @@ class StoredFileHistoryManager(models.Manager):
         return StoredFileHistoryQuerySet(self.model, using=self._db)
 
     def user(self, user: "OrganizationUser") -> models.QuerySet:
-        """filter queryset by user"""
+        """filter queryset by downloading user"""
         return self.get_queryset().user(user)
 
     def organization(self, organization: "Organization") -> models.QuerySet:
-        """filter queryset by organization"""
+        """filter queryset by downloader's organization"""
         return self.get_queryset().organization(organization)
