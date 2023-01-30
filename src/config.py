@@ -6,6 +6,18 @@ from marshmallow_dataclass import class_schema
 
 
 @dataclass
+class Organization:
+    name: str
+
+
+@dataclass
+class User:
+    username: str
+    password: str
+    organization: str
+
+
+@dataclass
 class Config:
     ALLOWED_HOSTS: list
     SECRET_KEY: str
@@ -13,6 +25,9 @@ class Config:
     SWAGGER_TITLE: str
     SWAGGER_DESCRIPTION: str
     KNOX_TOKEN_TTL_DAYS: int
+
+    ORGANIZATIONS: list[Organization]
+    USERS: list[User]
 
 
 config_path = "/../config.yaml"

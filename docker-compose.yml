@@ -20,7 +20,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./iconicchain/:/code/iconicchain/
+      - ./src/:/code/src/
       - ./static/:/code/static/
       - ./media/:/code/media/
       - ./logs:/code/logs/

@@ -42,11 +42,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_extensions",
     "drf_yasg",
     "knox",
     "rest_auth",
     "rest_framework",
     "rest_framework.authtoken",
+    "src.users",
+    "src.organizations",
 ]
 
 MIDDLEWARE = [
@@ -64,7 +67,7 @@ AUTHENTICATION_BACKENDS = [
     "sesame.backends.ModelBackend",
 ]
 
-ROOT_URLCONF = "iconicchain.urls"
+ROOT_URLCONF = "src.urls"
 
 TEMPLATES = [
     {
@@ -82,7 +85,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "iconicchain.wsgi.application"
+WSGI_APPLICATION = "src.wsgi.application"
 
 
 # Database
@@ -146,6 +149,8 @@ STATIC_URL = "/django-static/"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+AUTH_USER_MODEL = "users.OrganizationUser"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [

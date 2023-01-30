@@ -8,7 +8,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
-from iconicchain.settings import MEDIA_ROOT, MEDIA_URL, config
+from src.settings import MEDIA_ROOT, MEDIA_URL, config
 
 schema_view = get_schema_view(
     openapi.Info(

@@ -40,3 +40,6 @@ ps:
 
 down:
 	$(compose) down
+
+fixtures:
+	$(compose) exec web python manage.py create_fixtures
