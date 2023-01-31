@@ -11,8 +11,8 @@ Test task for Iconicchain job interview
 
 ## Getting started
 ### Building the project
-After cloning git repo is is needed to call init command
-which creates env files with default data and install's pre-commit.
+After cloning git repo it is necessary to call init command
+which creates env files with default data and installs pre-commit.
 ```
 make init
 ```
@@ -27,29 +27,30 @@ make full-migrate
 ```
 
 ### Fill database 
-As the CRUD for users and organizations were not required in task description,
+As the CRUD for users and organizations were not required in the task description,
 this instances can be created manually in shell or using manage.py command:
 
-command to enter shell_plus (ptpython implementation)
+The command to enter shell_plus (ptpython implementation)
 ```
 make shell
 ```
-command to create database fixtures (transfers users and organizations data
+The command to create database fixtures (transfers users and organizations data
 from config dataclass to database models)
 ```
 make fixtures
 ```
 
 ### Usage
-Absolute swagger link is based on allowed hosts from config file
-and django expose port from env file.WW
+Absolute swagger link is based on allowed hosts from the config file
+and django expose port from the env file.
 
 Defaults to http://localhost:8000/api/v1/swagger/
 
-To access API with access restriction "IsAuthenticated" through swagger,
-it is possible to add auth token from /users/login/ response into the "Authorization" modal with "Token" prefix
+There is a possibility to add auth token from /users/login/ response into the "Authorization" modal with "Token" prefix to access API with access restriction "IsAuthenticated" through swagger,
 
-So, correct input shall look like: "Token 5d5274a4c1fcb3db9d252cfca2326b02a595a40ff54dd9492056d770831d010c"
+So, the correct input shall look like:
+
+"Token 5d5274a4c1fcb3db9d252cfca2326b02a595a40ff54dd9492056d770831d010c"
 
 
 ## Project Features
@@ -57,13 +58,13 @@ So, correct input shall look like: "Token 5d5274a4c1fcb3db9d252cfca2326b02a595a4
 ### Authorization
 Authorization is implemented using "Django-Rest-Knox" library as it has some advantages
 comparing to the basic django rest auth:
-1) Allows login for a single user from multiple devices at once using different auth tokens
+1) Allows logging in for a single user from multiple devices at once using different auth tokens
 2) Encrypts auth tokens in the database, so they can't be compromised
 3) Has inbuilt mechanism for token expiry
 
 ### Swagger
-As the task description didn't require UI, project is dedicated to swagger usage, as is:
+As UI wasn't required in the task description, project is dedicated to swagger usage, i.e.:
 1) Possibility to Authorize using auth token.
 2) Specifying all input data and file upload widget using drf parsers and drf_yasg.
-3) Preserving file download response similar to the default reponse from "static"
+3) Preserving a file download response similar to the default response from "static"
 media urls to trigger file download features on the browser side.
