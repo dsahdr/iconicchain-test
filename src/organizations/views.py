@@ -11,7 +11,11 @@ from rest_framework.views import APIView
 
 from src.organizations.exceptions import FileNotFound, OrganizationNotFound
 from src.organizations.models import Organization, StoredFile, StoredFileHistory
-from src.organizations.serializers import FileSerializer, FileUploadSerializer
+from src.organizations.serializers import (
+    FileSerializer,
+    FileUploadSerializer,
+    OrganizationSerializer,
+)
 from src.responses import error_response
 from src.settings import MEDIA_ROOT
 
@@ -41,6 +45,12 @@ class FileUploadView(APIView):
         return Response("Uploaded", status=status.HTTP_201_CREATED)
 
 
+class OrganizationsView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Organization.objects.all()
+    serializer_class = OrganizationSerializer
+
+
 class OrganizationFilesView(ListAPIView):
     serializer_class = FileSerializer
     permission_classes = [IsAuthenticated]
@@ -52,15 +62,17 @@ class OrganizationFilesView(ListAPIView):
                 "organization_name", openapi.IN_QUERY, type=openapi.TYPE_STRING
             ),
         ],
+        responses={
+            200: FileSerializer(many=True),
+            404: OrganizationNotFound.default_detail,
+        },
     )
     def get(self: "ListAPIView", request: "HttpRequest", *args, **kwargs) -> "Response":
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self) -> QuerySet:
         organization_name = self.request.query_params.get("organization_name", "")
-        organization = Organization.objects.filter(
-            name__iexact=organization_name
-        ).first()
+        organization = Organization.objects.filter(name=organization_name).first()
         if not organization:
             raise OrganizationNotFound
         return StoredFile.objects.organization(organization)
@@ -69,6 +81,10 @@ class OrganizationFilesView(ListAPIView):
 class DownloadFilesView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(
+        operation_description="download single file",
+        responses={404: FileNotFound.default_detail},
+    )
     def get(self: "APIView", request: "HttpRequest", filename: str) -> "HttpResponse":
         file = StoredFile.objects.filter(file=filename).first()
         if not file:

@@ -23,7 +23,6 @@ class FileUploadSerializer(ModelSerializer):
 
 
 class FileSerializer(ModelSerializer):
-    organization = OrganizationSerializer()
     uploader = CharField(source="uploader.username")
 
     class Meta:
@@ -32,7 +31,6 @@ class FileSerializer(ModelSerializer):
             "file",
             "uploader",
             "upload_timestamp",
-            "organization",
             "download_count",
         )
 

@@ -49,6 +49,10 @@ class UserDownloadsView(ListAPIView):
         manual_parameters=[
             openapi.Parameter("username", openapi.IN_QUERY, type=openapi.TYPE_STRING),
         ],
+        responses={
+            200: FileHistorySerializer(many=True),
+            404: UserNotFound.default_detail,
+        },
     )
     def get(self: "ListAPIView", request: "HttpRequest", *args, **kwargs) -> "Response":
         return super().get(request, *args, **kwargs)
